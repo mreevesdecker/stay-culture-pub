@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stay Culture — Launch Plan</title>
+<style>
+:root{
+  color-scheme:light;
+  --ink:#1c1b19; --muted:#75726b; --faint:#a8a49c;
+  --line:#e5e3de; --panel:#f8f8f6; --bg:#fff;
+  --red:#c0512c; --redsoft:#fdeee8;
+  --blue:#3f6ea8; --bluesoft:#eef3f9;
+  --teal:#2f7d6b; --tealsoft:#ecf6f3;
+  --plum:#7a5490; --plumsoft:#f4eff7;
+  --gold:#a07d1c; --goldsoft:#f7f2e3;
+  --slack:#dedbd4;
+}
+*{box-sizing:border-box}
+body{margin:0;padding:20px;background:var(--bg);color:var(--ink);
+  font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+h1{font-size:21px;margin:0 0 3px;letter-spacing:-.015em}
+.sub{color:var(--muted);font-size:13px;margin-bottom:16px}
+
+/* view toggle */
+.viewtabs{display:inline-flex;gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:18px}
+.vtab{padding:8px 18px;font-size:13px;font-weight:500;cursor:pointer;border:none;background:#fff;color:var(--muted)}
+.vtab.on{background:var(--ink);color:#fff}
+.vtab+.vtab{border-left:1px solid var(--line)}
+
+.hide{display:none!important}
+
+/* ═══ SUMMARY PAGE ═══ */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:14px;margin-bottom:16px}
+.herobox{border:1px solid var(--line);border-radius:12px;padding:20px 22px}
+.herobox.launch{background:var(--redsoft);border-color:#f2d6c9}
+.herobox .lab{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:8px}
+.bigdate{font-size:30px;font-weight:700;letter-spacing:-.02em;line-height:1.05}
+.bigdate .to{font-size:16px;font-weight:500;color:var(--muted);display:block;margin:2px 0}
+.herobox .cap{font-size:12.5px;color:var(--muted);margin-top:10px;line-height:1.4}
+.statgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start}
+.stat{border:1px solid var(--line);border-radius:10px;padding:13px 15px}
+.stat .n{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.stat .n.tealtxt{color:var(--teal)}
+.stat .l{font-size:11.5px;color:var(--muted);line-height:1.3;margin-top:2px}
+
+.phases{border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:16px}
+.phases h2,.milebox h2,.compare h2{font-size:12px;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--muted);margin:0 0 15px;font-weight:600}
+.phaserow{display:grid;grid-template-columns:135px 1fr 150px;align-items:center;gap:14px;margin-bottom:11px}
+.phaserow:last-child{margin-bottom:0}
+.phaselab{font-size:13px;font-weight:600}
+.phaselab .who{display:block;font-size:11px;font-weight:400;color:var(--muted);margin-top:1px}
+.phasetrack{position:relative;height:22px;background:var(--panel);border-radius:5px}
+.phasebar{position:absolute;top:0;height:22px;border-radius:5px;opacity:.92}
+.phasebar.editorial{background:var(--blue)}
+.phasebar.cover{background:var(--plum)}
+.phasebar.production{background:var(--teal)}
+.phasebar.marketing{background:var(--gold)}
+.phasedate{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.phaseaxis{display:grid;grid-template-columns:135px 1fr 150px;gap:14px;margin-top:6px}
+.axisline{position:relative;height:16px}
+.axtk{position:absolute;font-size:10px;color:var(--faint);transform:translateX(-50%)}
+
+.midgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.milebox,.compare{border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.mile{display:flex;align-items:baseline;gap:12px;padding:7px 0;border-bottom:1px solid #f2f1ee}
+.mile:last-child{border-bottom:none}
+.mile .md{font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;min-width:96px}
+.mile .mn{font-size:13px}
+.mile .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;align-self:center}
+
+.compare .crow{display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;margin-bottom:10px}
+.compare .cbar{height:24px;border-radius:5px;position:relative}
+.cbar.seq{background:repeating-linear-gradient(90deg,#cfcbc2,#cfcbc2 14px,#dcd8d0 14px,#dcd8d0 16px)}
+.cbar.par{background:var(--red)}
+.cbar span{position:absolute;right:8px;top:3px;font-size:12px;font-weight:600;color:#fff}
+.cbar.seq span{color:#5c584f}
+.ctag{font-size:12px;color:var(--muted);white-space:nowrap}
+.csave{margin-top:12px;padding-top:12px;border-top:1px solid var(--line);font-size:13px;line-height:1.45}
+.csave b{color:var(--teal)}
+
+.callout{background:var(--redsoft);border:1px solid #f2d6c9;border-radius:12px;padding:15px 18px;
+  font-size:13px;line-height:1.5;color:#7a3418}
+.callout b{color:#5c2410}
+.chain{margin-top:8px;font-size:12px;color:#8f3d1d}
+.chain code{background:#fff;border:1px solid #f0d0c2;border-radius:4px;padding:1px 5px;
+  font:inherit;font-size:11.5px;white-space:nowrap;display:inline-block;margin:2px 2px 0 0}
+
+/* ═══ FULL PLAN (gantt) ═══ */
+.bar{display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px;margin-bottom:14px}
+.ctrl{display:flex;flex-direction:column;gap:4px}
+.ctrl label{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+input[type=date]{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:#fff}
+.btns{display:flex;gap:6px;margin-left:auto}
+button{font:inherit;font-size:13px;padding:7px 12px;border:1px solid var(--line);background:#fff;
+  color:var(--ink);border-radius:6px;cursor:pointer}
+button:hover{background:#f0efec}
+button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+button.primary{background:var(--red);border-color:var(--red);color:#fff}
+button.primary:hover{background:#a54625}
+.ticker{padding:11px 14px;border-radius:9px;font-size:13px;margin-bottom:14px;
+  border:1px solid var(--line);background:var(--panel);color:var(--muted);transition:.15s}
+.ticker.good{background:var(--tealsoft);border-color:#cbe3db;color:#245d50}
+.ticker.bad{background:var(--redsoft);border-color:#f2d6c9;color:#8f3d1d}
+.ticker b{color:inherit}
+.chart{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.scroll{overflow-x:auto}
+.inner{min-width:900px}
+.axis{display:grid;grid-template-columns:var(--lane) 1fr;background:var(--panel);border-bottom:1px solid var(--line)}
+.axis .pad{border-right:1px solid var(--line)}
+.axtrack{position:relative;height:30px}
+.axlab{position:absolute;top:8px;font-size:10.5px;color:var(--muted);letter-spacing:.03em;transform:translateX(4px);white-space:nowrap}
+.grp{display:grid;grid-template-columns:var(--lane) 1fr;background:#fcfcfb;border-bottom:1px solid var(--line);border-top:1px solid var(--line)}
+.grp .gl{padding:6px 12px;font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:600;border-right:1px solid var(--line)}
+.grp .gt{position:relative}
+.row{display:grid;grid-template-columns:var(--lane) 1fr;border-bottom:1px solid #f2f1ee}
+.row:last-child{border-bottom:none}
+.row:hover{background:#fcfcfb}
+.row.dim{opacity:.32}
+.name{padding:9px 12px;font-size:12.5px;border-right:1px solid var(--line);display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden}
+.name .t{overflow:hidden;text-overflow:ellipsis}
+.pill{font-size:9px;text-transform:uppercase;letter-spacing:.05em;padding:1px 5px;border-radius:3px;flex-shrink:0;font-weight:600}
+.pill.cp{background:var(--red);color:#fff}
+.pill.fl{background:#fff;color:var(--muted);border:1px solid var(--line)}
+.track{position:relative;height:38px}
+.tick{position:absolute;top:0;bottom:0;width:1px;background:#f2f1ee}
+.tick.q{background:#e8e6e1}
+.bar-w{position:absolute;top:8px;height:22px;display:flex;align-items:center;cursor:grab;user-select:none;touch-action:none}
+.bar-w:active{cursor:grabbing}
+.b{height:22px;border-radius:5px;flex:1;position:relative;display:flex;align-items:center;padding:0 7px;font-size:11px;color:#fff;font-weight:500;white-space:nowrap;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.b.crit{background:var(--red)}
+.b.editorial{background:var(--blue)}
+.b.cover{background:var(--plum)}
+.b.production{background:var(--teal)}
+.b.marketing{background:var(--gold)}
+.b.drag{outline:2px solid var(--ink);outline-offset:1px}
+.grip{position:absolute;right:0;top:0;bottom:0;width:8px;cursor:ew-resize;border-radius:0 5px 5px 0}
+.grip:hover{background:rgba(255,255,255,.35)}
+.float{position:absolute;top:8px;height:22px;border-radius:5px;background:repeating-linear-gradient(45deg,#e8e6e1,#e8e6e1 3px,#f4f3f0 3px,#f4f3f0 6px);border:1px dashed #d5d2cb;pointer-events:none}
+.msbar{position:absolute;top:5px;height:28px;width:3px;background:var(--ink);border-radius:2px}
+.msflag{position:absolute;top:8px;font-size:11px;font-weight:600;white-space:nowrap;transform:translateX(8px);color:var(--ink)}
+.pubflag{position:absolute;top:0;bottom:0;width:2px;background:var(--red)}
+.legend{margin-top:14px;font-size:12px;color:var(--muted);display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.key{display:inline-flex;align-items:center;gap:6px}
+.sw{width:13px;height:13px;border-radius:3px;display:inline-block}
+.hint{margin-top:10px;font-size:12px;color:var(--faint)}
+
+.foot{margin-top:18px;font-size:11px;color:var(--faint)}
+
+@media print{
+  body{padding:0}
+  .viewtabs,.bar,.ticker,.hint,.btns{display:none!important}
+  .inner{min-width:0}.scroll{overflow:visible}
+  .hide{display:block!important}      /* print shows everything */
+  #viewFull{page-break-before:always}
+}
+</style>
+</head>
+<body>
+
+<h1>Stay Culture — Launch Plan</h1>
+<div class="sub">Ryan Leek &middot; a book launch timeline. <span id="asof"></span></div>
+
+<div class="viewtabs">
+  <button class="vtab on" id="vSummary">Summary</button>
+  <button class="vtab" id="vFull">Full plan</button>
+</div>
+
+<!-- ═══════════ SUMMARY ═══════════ -->
+<div id="viewSummary">
+
+  <div class="hero">
+    <div class="herobox launch">
+      <div class="lab">Projected publication</div>
+      <div class="bigdate" id="sPubEarly">—<span class="to" id="sPubTo"></span></div>
+      <div class="cap" id="sPubCap"></div>
+    </div>
+    <div class="statgrid">
+      <div class="stat"><div class="n" id="sTotal">—</div><div class="l">weeks from start to launch</div></div>
+      <div class="stat"><div class="n tealtxt" id="sSaved">—</div><div class="l">weeks saved by running work in parallel</div></div>
+      <div class="stat"><div class="n" id="sStages">—</div><div class="l">stages across 4 tracks</div></div>
+      <div class="stat"><div class="n" id="sPrint">—</div><div class="l">files to printer (the key handoff)</div></div>
+    </div>
+  </div>
+
+  <div class="phases">
+    <h2>The plan at a glance — four tracks running side by side</h2>
+    <div id="phaseRows"></div>
+    <div class="phaseaxis"><div></div><div class="axisline" id="phaseAxis"></div><div></div></div>
+  </div>
+
+  <div class="midgrid">
+    <div class="milebox">
+      <h2>Key dates</h2>
+      <div id="mileList"></div>
+    </div>
+    <div class="compare">
+      <h2>Why it's faster than it looks</h2>
+      <div class="crow"><div class="cbar seq" id="cSeq"><span id="cSeqW"></span></div><div class="ctag">one after another</div></div>
+      <div class="crow"><div class="cbar par" id="cPar" style="width:62%"><span id="cParW"></span></div><div class="ctag">your plan</div></div>
+      <div class="csave" id="cSave"></div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <b>What actually controls the launch date:</b> only the stages below drive it. Everything else has breathing room and can slip without moving publication. Protect this chain.
+    <div class="chain" id="chainList"></div>
+  </div>
+
+</div>
+
+<!-- ═══════════ FULL PLAN ═══════════ -->
+<div id="viewFull" class="hide">
+  <div class="bar">
+    <div class="ctrl"><label for="startDate">Project start</label><input type="date" id="startDate" value="2026-07-14"></div>
+    <div class="ctrl"><label for="compsDate">Cover comps arrive</label><input type="date" id="compsDate" value="2026-07-27"></div>
+    <div class="btns">
+      <button id="btnRisk">Show worst case</button>
+      <button id="btnReset">Reset</button>
+      <button id="btnPrint">Print / PDF</button>
+      <button class="primary" id="btnCsv">Export CSV</button>
+    </div>
+  </div>
+  <div class="ticker" id="ticker">
+    Bars sitting side by side happen <b>at the same time</b> — they cost no extra calendar. Only the <b>red chain</b> adds up. Drag any bar to see for yourself.
+  </div>
+  <div class="chart"><div class="scroll"><div class="inner" id="inner"></div></div></div>
+  <div class="legend">
+    <span class="key"><i class="sw" style="background:var(--red)"></i> Critical chain — moving these moves the launch</span>
+    <span class="key"><i class="sw" style="background:var(--blue)"></i> Editorial</span>
+    <span class="key"><i class="sw" style="background:var(--plum)"></i> Cover &amp; jacket</span>
+    <span class="key"><i class="sw" style="background:var(--teal)"></i> Production</span>
+    <span class="key"><i class="sw" style="background:var(--gold)"></i> Marketing</span>
+    <span class="key"><i class="sw" style="background:repeating-linear-gradient(45deg,#e8e6e1,#e8e6e1 3px,#f4f3f0 3px,#f4f3f0 6px);border:1px dashed #d5d2cb"></i> Slack</span>
+  </div>
+  <div class="hint">Drag a bar sideways to delay it. Drag its right edge to change its length. Hatched room behind a bar is how far it can slide for free.</div>
+</div>
+
+<div class="foot" id="foot"></div>
+
+<script>
+const DAY=86400000, WK=7*DAY;
+const parse=s=>new Date(s+'T00:00:00Z');
+const addW=(d,w)=>new Date(d.getTime()+w*WK);
+const fmt=d=>d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'});
+const fmtNoYr=d=>d.toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'UTC'});
+const fmtM=d=>d.toLocaleDateString('en-US',{month:'short',timeZone:'UTC'});
+const fmtMY=d=>d.toLocaleDateString('en-US',{month:'short',year:'2-digit',timeZone:'UTC'});
+
+const GROUPS=[
+  {id:'editorial', label:'Editorial',      color:'var(--blue)', who:'Author + Editorial'},
+  {id:'cover',     label:'Cover & Jacket', color:'var(--plum)', who:'Designer + Author'},
+  {id:'production',label:'Production',      color:'var(--teal)', who:'Typesetter + Printer'},
+  {id:'marketing', label:'Marketing',      color:'var(--gold)', who:'Marketing / PR'}
+];
+
+const PLAN=[
+ {id:'manuscript', g:'editorial', name:'Manuscript drafting (remaining)', deps:[],             wks:2, wksMax:3,  lead:0, delay:0},
+ {id:'feedback',   g:'editorial', name:'Reader feedback',                 deps:['manuscript'], wks:2, wksMax:2,  lead:0, delay:0},
+ {id:'revisions',  g:'editorial', name:'Author revisions',                deps:['feedback'],   wks:1, wksMax:1,  lead:0, delay:0},
+ {id:'proof',      g:'editorial', name:'Proofreading',                    deps:['typeset'],    wks:2, wksMax:3,  lead:0, delay:0},
+ {id:'collate',    g:'editorial', name:'Collation of marks',              deps:['proof'],      wks:1, wksMax:1,  lead:0, delay:0},
+ {id:'authorRev',  g:'editorial', name:'Author review of edits',          deps:['collate'],    wks:1, wksMax:2,  lead:0, delay:0},
+ {id:'corrections',g:'editorial', name:'Final corrections & approvals',   deps:['authorRev'],  wks:4, wksMax:6,  lead:0, delay:0},
+ {id:'comps',      g:'cover', name:'Cover comps delivered',   deps:[], wks:0, wksMax:0, lead:0, delay:0, fixed:true, ms:true},
+ {id:'coverPick',  g:'cover', name:'Cover review / decide',   deps:['comps'],       wks:3, wksMax:6, lead:0, delay:0},
+ {id:'endorse',    g:'cover', name:'Endorsements collected',  deps:['authorRev'],   wks:1, wksMax:1, lead:0, delay:0},
+ {id:'jacketCopy', g:'cover', name:'Jacket copy review',      deps:['proof'],       wks:1, wksMax:1, lead:0, delay:0},
+ {id:'jacket',     g:'cover', name:'Final jacket layout',     deps:['corrections','coverPick','endorse'], wks:1, wksMax:1, lead:0, delay:0},
+ {id:'typeset',    g:'production', name:'Typesetting',               deps:['revisions'], wks:8, wksMax:10, lead:0, delay:0},
+ {id:'printer',    g:'production', name:'Files to printer',          deps:['jacket'],    wks:1, wksMax:1,  lead:0, delay:0, ms:true},
+ {id:'print',      g:'production', name:'Printing & distribution',   deps:['printer'],   wks:12,wksMax:14, lead:0, delay:0},
+ {id:'audiobook',  g:'production', name:'Audiobook (optional)',      deps:['printer'],   wks:4, wksMax:5,  lead:0, delay:0},
+ {id:'mktPlan',    g:'marketing', name:'Marketing plan',         deps:['authorRev'], wks:6, wksMax:8, lead:0, delay:0},
+ {id:'mktSched',   g:'marketing', name:'Content calendar & setup',deps:['mktPlan'],  wks:2, wksMax:3, lead:0, delay:0},
+ {id:'promo',      g:'marketing', name:'Promotion campaign',     deps:['printer'],   wks:4, wksMax:6, lead:0, delay:0}
+];
+
+let T = structuredClone(PLAN);
+let RISK = false, PX = 15;
+const LANE = 205;
+const byId=()=>{const m={};T.forEach(t=>m[t.id]=t);return m;};
+const dur=t=>RISK?t.wksMax:t.wks;
+
+function topo(){
+  const m=byId(), out=[], mk={};
+  T.forEach(function v(t){ if(mk[t.id])return; mk[t.id]=1; t.deps.forEach(d=>m[d]&&v(m[d])); out.push(t); });
+  return out;
+}
+function compute(){
+  const start=parse(document.getElementById('startDate').value);
+  const comps=parse(document.getElementById('compsDate').value);
+  const m=byId(), compsWk=Math.round((comps-start)/WK);
+  topo().forEach(t=>{
+    if(t.fixed){t.es=compsWk;t.ef=compsWk;return;}
+    const p=t.deps.map(d=>m[d]).filter(Boolean);
+    const base=p.length?Math.max(...p.map(x=>x.ef-t.lead)):0;
+    t.es=Math.max(0,base)+t.delay; t.ef=t.es+dur(t);
+  });
+  const finish=m.print.ef;
+  topo().slice().reverse().forEach(t=>{
+    const s=T.filter(x=>x.deps.includes(t.id));
+    t.lf=s.length?Math.min(...s.map(x=>x.es+x.lead)):((t.id==='print')?finish:Math.max(t.ef,finish));
+    t.ls=t.lf-dur(t); t.float=Math.max(0,t.ls-t.es);
+    t.critical=!t.fixed&&t.float===0&&t.ef<=finish;
+  });
+  m.print.critical=true;
+  // worst-case finish
+  const rMax = ()=>{const s=parse(document.getElementById('startDate').value);const cw=compsWk;const mm={};
+    const clone=structuredClone(T);const cm={};clone.forEach(t=>cm[t.id]=t);
+    const ord=[];const mk={};clone.forEach(function v(t){if(mk[t.id])return;mk[t.id]=1;t.deps.forEach(d=>cm[d]&&v(cm[d]));ord.push(t);});
+    ord.forEach(t=>{if(t.fixed){t.ef=cw;return;}const p=t.deps.map(d=>cm[d]).filter(Boolean);
+      const base=p.length?Math.max(...p.map(x=>x.ef-t.lead)):0;t.ef=Math.max(0,base)+t.delay+t.wksMax;});
+    return cm.print.ef;};
+  return {start,finish,finishMax:rMax(),m};
+}
+
+/* ── SUMMARY render ── */
+function renderSummary(){
+  const {start,finish,finishMax,m}=compute();
+  const pubEarly=addW(start,finish), pubLate=addW(start,finishMax);
+
+  document.getElementById('sPubEarly').childNodes[0].nodeValue=fmt(pubEarly);
+  document.getElementById('sPubTo').textContent='through '+fmt(pubLate)+' worst case';
+  document.getElementById('sPubCap').textContent=
+    'About '+Math.round((finishMax-finish))+' weeks of spread depending on how estimates land. Printing runs '
+    +m.print.wks+'–'+m.print.wksMax+' weeks after files reach the printer.';
+
+  const seqWks=T.filter(t=>!t.fixed).reduce((s,t)=>s+t.wks,0);
+  document.getElementById('sTotal').textContent=finish;
+  document.getElementById('sSaved').textContent=seqWks-finish;
+  document.getElementById('sStages').textContent=T.filter(t=>!t.ms).length;
+  document.getElementById('sPrint').textContent=fmtNoYr(addW(start,m.printer.es));
+
+  // phase bands = min/max start-finish per group
+  const pr=document.getElementById('phaseRows'); pr.innerHTML='';
+  const spanMax=finishMax;
+  GROUPS.forEach(g=>{
+    const rows=T.filter(t=>t.g===g.id);
+    const es=Math.min(...rows.map(t=>t.es));
+    const ef=Math.max(...rows.map(t=>t.ef));
+    const left=(es/spanMax)*100, w=Math.max(2,((ef-es)/spanMax)*100);
+    pr.innerHTML+=
+      '<div class="phaserow"><div class="phaselab">'+g.label+'<span class="who">'+g.who+'</span></div>'
+      +'<div class="phasetrack"><div class="phasebar '+g.id+'" style="left:'+left+'%;width:'+w+'%"></div></div>'
+      +'<div class="phasedate">'+fmtNoYr(addW(start,es))+' – '+fmtNoYr(addW(start,ef))+'</div></div>';
+  });
+  // axis ticks by quarter
+  const ax=document.getElementById('phaseAxis'); ax.innerHTML='';
+  const c=new Date(Date.UTC(start.getUTCFullYear(),start.getUTCMonth(),1));
+  while((c-start)/WK<=spanMax){
+    const wk=(c-start)/WK;
+    if(wk>=0&&c.getUTCMonth()%2===0) ax.innerHTML+='<div class="axtk" style="left:'+((wk/spanMax)*100)+'%">'+fmtMY(c)+'</div>';
+    c.setUTCMonth(c.getUTCMonth()+1);
+  }
+
+  // milestones / key dates
+  const keys=['manuscript','comps','typeset','proof','corrections','jacket','printer','print'];
+  const labels={manuscript:'Manuscript locked',comps:'Cover comps in',typeset:'Typesetting done',
+    proof:'Proofreading done',corrections:'Final corrections done',jacket:'Jacket finalized',
+    printer:'Files to printer',print:'PUBLICATION'};
+  const gcolor={editorial:'var(--blue)',cover:'var(--plum)',production:'var(--teal)',marketing:'var(--gold)'};
+  const ml=document.getElementById('mileList'); ml.innerHTML='';
+  keys.map(id=>{const t=m[id];const when=(id==='comps')?t.es:t.ef;return {id,when,t};})
+    .sort((a,b)=>a.when-b.when)
+    .forEach(k=>{
+      const isPub=k.id==='print';
+      ml.innerHTML+='<div class="mile"><span class="dot" style="background:'+(isPub?'var(--red)':gcolor[k.t.g])+'"></span>'
+        +'<span class="md"'+(isPub?' style="color:var(--red)"':'')+'>'+fmtNoYr(addW(start,k.when))+'</span>'
+        +'<span class="mn"'+(isPub?' style="font-weight:700;color:var(--red)"':'')+'>'+labels[k.id]+'</span></div>';
+    });
+
+  // compare bars
+  document.getElementById('cSeqW').textContent=seqWks+' wks';
+  document.getElementById('cParW').textContent=finish+' wks';
+  document.getElementById('cPar').style.width=Math.max(10,(finish/seqWks)*100)+'%';
+  document.getElementById('cSave').innerHTML='Same work either way — side-by-side scheduling turns '
+    +seqWks+' weeks of tasks into <b>'+finish+' weeks</b> of calendar.';
+
+  // critical chain
+  const chain=T.filter(t=>t.critical&&!t.ms).map(t=>t.name);
+  document.getElementById('chainList').innerHTML=chain.map(n=>'<code>'+n+'</code>').join('<span style="color:#d0a894"> → </span>');
+}
+
+/* ── FULL gantt render (same as before) ── */
+function render(msg,tone){
+  const {start,finish,m}=compute();
+  const pubDate=addW(start,finish);
+  if(msg){const tk=document.getElementById('ticker');tk.innerHTML=msg;tk.className='ticker'+(tone?' '+tone:'');}
+  const avail=Math.max(700,document.querySelector('#viewFull .scroll').clientWidth-LANE-20);
+  PX=Math.max(11,Math.min(26,avail/(finish+3)));
+  const W=(finish+2)*PX;
+  const inner=document.getElementById('inner');
+  inner.style.setProperty('--lane',LANE+'px');
+  inner.style.minWidth=(LANE+W)+'px';
+  let ticks='';
+  const c=new Date(Date.UTC(start.getUTCFullYear(),start.getUTCMonth(),1));
+  while(c.getTime()<=addW(start,finish+2).getTime()){const wk=(c-start)/WK;
+    if(wk>=0)ticks+='<div class="tick'+(c.getUTCMonth()%3===0?' q':'')+'" style="left:'+(wk*PX)+'px"></div>';
+    c.setUTCMonth(c.getUTCMonth()+1);}
+  let axis='';const c2=new Date(Date.UTC(start.getUTCFullYear(),start.getUTCMonth(),1));
+  while(c2.getTime()<=addW(start,finish+2).getTime()){const wk=(c2-start)/WK;
+    if(wk>=0){const lbl=(c2.getUTCMonth()===0||wk===0)?fmtMY(c2):fmtM(c2);
+      if(PX>13||c2.getUTCMonth()%2===0)axis+='<div class="axlab" style="left:'+(wk*PX)+'px">'+lbl+'</div>';}
+    c2.setUTCMonth(c2.getUTCMonth()+1);}
+  let html='<div class="axis"><div class="pad"></div><div class="axtrack">'+ticks+axis+'</div></div>';
+  GROUPS.forEach(g=>{
+    const rows=T.filter(t=>t.g===g.id).sort((a,b)=>a.es-b.es);
+    if(!rows.length)return;
+    html+='<div class="grp"><div class="gl" style="color:'+g.color+'">'+g.label+'</div><div class="gt"></div></div>';
+    rows.forEach(t=>{
+      const left=t.es*PX, w=Math.max(dur(t)*PX,t.ms?3:8);
+      const pill=t.fixed?'<span class="pill fl">Fixed</span>':t.critical?'<span class="pill cp">Critical</span>':(t.float>0?'<span class="pill fl">'+t.float+'w slack</span>':'');
+      let bar;
+      if(t.ms){bar='<div class="msbar" style="left:'+left+'px"></div><div class="msflag" style="left:'+left+'px">'+fmt(addW(start,t.es))+'</div>';}
+      else{const fb=t.float>0?'<div class="float" style="left:'+(left+w)+'px;width:'+(t.float*PX)+'px"></div>':'';
+        const cls=t.critical?'crit':t.g;const lbl=(w>46)?dur(t)+'w':'';
+        bar=fb+'<div class="bar-w" data-id="'+t.id+'" style="left:'+left+'px;width:'+w+'px"><div class="b '+cls+'">'+lbl+'<div class="grip" data-grip="'+t.id+'"></div></div></div>';}
+      html+='<div class="row" data-row="'+t.id+'"><div class="name"><span class="t">'+t.name+'</span>'+pill+'</div><div class="track">'+ticks+bar+'</div></div>';
+    });
+  });
+  html+='<div class="grp"><div class="gl" style="color:var(--red)">Launch</div><div class="gt"></div></div>'
+      +'<div class="row"><div class="name"><span class="t"><b>PUBLICATION DATE</b></span></div><div class="track">'+ticks
+      +'<div class="pubflag" style="left:'+(finish*PX)+'px"></div><div class="msflag" style="left:'+(finish*PX)+'px;color:var(--red)">'+fmt(pubDate)+'</div></div></div>';
+  inner.innerHTML=html;
+  wire(start,finish);
+}
+
+let drag=null;
+function wire(start,finish){
+  document.querySelectorAll('.bar-w').forEach(el=>{
+    el.addEventListener('pointerdown',e=>{
+      const id=el.dataset.id, t=T.find(x=>x.id===id);
+      drag={id,isGrip:e.target.dataset.grip!==undefined,x0:e.clientX,delay0:t.delay,wks0:t.wks,max0:t.wksMax,pub0:finish,el};
+      el.querySelector('.b').classList.add('drag'); el.setPointerCapture(e.pointerId); highlight(id); e.preventDefault();
+    });
+    el.addEventListener('pointermove',e=>{
+      if(!drag||drag.id!==el.dataset.id)return;
+      const dw=Math.round((e.clientX-drag.x0)/PX), t=T.find(x=>x.id===drag.id);
+      if(drag.isGrip){const nv=Math.max(1,drag.wks0+dw);t.wks=nv;t.wksMax=nv+Math.max(0,drag.max0-drag.wks0);}
+      else t.delay=Math.max(0,drag.delay0+dw);
+      render(); report(t,drag.pub0);
+      const again=document.querySelector('.bar-w[data-id="'+drag.id+'"] .b'); if(again)again.classList.add('drag'); highlight(drag.id);
+    });
+    const end=()=>{if(!drag)return;const t=T.find(x=>x.id===drag.id);drag=null;render();report(t,null,true);unhighlight();renderSummary();};
+    el.addEventListener('pointerup',end); el.addEventListener('pointercancel',end);
+  });
+}
+function report(t,before,settle){
+  const {finish}=compute();const el=document.getElementById('ticker');
+  if((before===null||before===undefined)&&!settle)return;
+  let msg,tone;
+  if(t.float>0&&t.delay>0){msg='<b>'+t.name+'</b> moved '+t.delay+'w later. Publication <b>did not move</b> — '+t.float+'w of room left.';tone='good';}
+  else if(t.critical){msg='<b>'+t.name+'</b> is on the critical chain. Every week here is <b>a week added to the launch</b>.';tone='bad';}
+  else if(t.float>0){msg='<b>'+t.name+'</b> has '+t.float+'w of slack before it costs anything.';tone='good';}
+  else{msg='<b>'+t.name+'</b> has no slack left — any further delay pushes the launch.';tone='bad';}
+  el.innerHTML=msg;el.className='ticker '+tone;
+}
+function highlight(id){const m=byId();const rel=new Set([id]);m[id].deps.forEach(d=>rel.add(d));
+  T.filter(s=>s.deps.includes(id)).forEach(s=>rel.add(s.id));
+  document.querySelectorAll('.row[data-row]').forEach(r=>{if(!rel.has(r.dataset.row))r.classList.add('dim');});}
+function unhighlight(){document.querySelectorAll('.row').forEach(r=>r.classList.remove('dim'));}
+
+function renderAll(msg,tone){renderSummary();render(msg,tone);}
+
+/* controls */
+['startDate','compsDate'].forEach(i=>document.getElementById(i).addEventListener('change',()=>renderAll()));
+document.getElementById('btnRisk').addEventListener('click',e=>{
+  RISK=!RISK;e.target.classList.toggle('on',RISK);e.target.textContent=RISK?'Showing worst case':'Show worst case';
+  renderAll(RISK?'Now showing the <b>worst case</b> — every stage at its longest estimate.':'Back to the <b>planned</b> durations.',RISK?'bad':null);
+});
+document.getElementById('btnReset').addEventListener('click',()=>{
+  T=structuredClone(PLAN);RISK=false;const b=document.getElementById('btnRisk');b.classList.remove('on');b.textContent='Show worst case';
+  document.getElementById('startDate').value='2026-07-14';document.getElementById('compsDate').value='2026-07-27';
+  renderAll('Reset to the original plan.',null);
+});
+document.getElementById('btnPrint').addEventListener('click',()=>window.print());
+document.getElementById('btnCsv').addEventListener('click',()=>{
+  const {start,m}=compute();const esc=s=>'"'+String(s).replace(/"/g,'""')+'"';
+  const L=[['Stage','Track','Duration (wks)','Depends On','Start','Finish','Slack (wks)','Critical'].map(esc).join(',')];
+  T.forEach(t=>L.push([t.name,t.g,t.fixed?'':dur(t),t.deps.map(d=>m[d]?m[d].name:d).join(' + ')||'—',
+    fmt(addW(start,t.es)),fmt(addW(start,t.ef)),t.fixed?'':t.float,t.critical?'YES':'no'].map(esc).join(',')));
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([L.join('\n')],{type:'text/csv'}));a.download='stay-culture-plan.csv';a.click();
+});
+
+/* view toggle */
+const vS=document.getElementById('vSummary'), vF=document.getElementById('vFull');
+const pS=document.getElementById('viewSummary'), pF=document.getElementById('viewFull');
+vS.addEventListener('click',()=>{vS.classList.add('on');vF.classList.remove('on');pS.classList.remove('hide');pF.classList.add('hide');});
+vF.addEventListener('click',()=>{vF.classList.add('on');vS.classList.remove('on');pF.classList.remove('hide');pS.classList.add('hide');render();});
+
+document.getElementById('asof').textContent='Prepared '+new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})+'.';
+document.getElementById('foot').textContent='Estimates, not commitments — durations are planning ranges. Publication assumes a 12–14 week printer turnaround after files are submitted.';
+window.addEventListener('resize',()=>{renderSummary();if(!pF.classList.contains('hide'))render();});
+renderAll();
+</script>
+</body>
+</html>
